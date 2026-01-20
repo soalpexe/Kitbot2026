@@ -6,6 +6,7 @@ package frc.robot;
 
 public class Constants {
     public static final int controllerID = 0;
+    public static final double deadband = 0.1;
 
     public class Drivetrain {
         public static final int leftMotorID = 0, rightMotorID = 1;

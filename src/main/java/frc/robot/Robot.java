@@ -45,8 +45,18 @@ public class Robot extends TimedRobot {
         scheduler.setDefaultCommand(
             container.drivetrain,
             container.drivetrain.driveCmd(
-                () -> controller.getLeftY(),
-                () -> controller.getRightX()
+                () -> {
+                    double input = controller.getLeftY();
+                    double inputDB = Utils.inTolerance(0, input, Constants.deadband) ? 0 : input;
+
+                    return inputDB;
+                },
+                () -> {
+                    double input = controller.getRightX();
+                    double inputDB = Utils.inTolerance(0, input, Constants.deadband) ? 0 : input;
+
+                    return inputDB;
+                }
             )
         );
     }
