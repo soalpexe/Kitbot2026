@@ -7,21 +7,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class Robot extends TimedRobot {
-    CommandScheduler scheduler;
-    Timer timer;
+    private CommandScheduler scheduler;
+    private Timer timer;
 
-    CommandXboxController controller;
-    RobotContainer container;
+    private RobotContainer container;
 
     public Robot() {
         scheduler = CommandScheduler.getInstance();
         timer = new Timer();
 
-        controller = new CommandXboxController(Constants.controllerID);
-        container = new RobotContainer();
+        container = new RobotContainer(Constants.controllerID);
     }
 
     @Override
@@ -38,37 +35,5 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {}
 
     @Override
-    public void autonomousPeriodic() {}
-
-    @Override
-    public void teleopInit() {
-        scheduler.setDefaultCommand(
-            container.drivetrain,
-            container.drivetrain.driveCmd(
-                () -> {
-                    double input = controller.getLeftY();
-                    double inputDB = Utils.inTolerance(0, input, Constants.deadband) ? 0 : input;
-
-                    return inputDB;
-                },
-                () -> {
-                    double input = controller.getRightX();
-                    double inputDB = Utils.inTolerance(0, input, Constants.deadband) ? 0 : input;
-
-                    return inputDB;
-                }
-            )
-        );
-    }
-
-    @Override
-    public void teleopPeriodic() {
-        controller.leftBumper()
-            .onTrue(container.intakeCmd())
-            .onFalse(container.stopCmd());
-            
-        controller.rightBumper()
-            .onTrue(container.shootCmd())
-            .onFalse(container.stopCmd());
-    }
+    public void teleopInit() {}
 }
